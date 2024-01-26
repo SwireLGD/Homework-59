@@ -8,13 +8,15 @@ type MovieItem = {
 };
 
 const MovieItem: React.FC<MovieItem> = React.memo(({ movie, onUpdate, onDelete }) => {
+    
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate(movie.id, e.target.value);
     };
 
     return (
-        <li>
-            <input type="text" value = {movie.title} onChange = {changeHandler} />
+        <li className='list-group-item d-flex align-items-center border border-3 rounded-2 p-2 mt-3'>
+            <input type="text" className='rounded-2 border-0' value = {movie.title} onChange = {changeHandler} />
+            <button className='btn-close' onClick={() => onDelete(movie.id)}></button>
         </li>
     );
 });
