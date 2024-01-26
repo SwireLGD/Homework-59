@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import MovieForm from "./Components/MovieForm/Form";
 import MovieItem from "./Components/Movies/MovieItem";
 import IdGenerator from "./Components/IdGenerator/IdGenerator";
+import Button from './Components/Button/Button';
+import Loader from './Components/Loader/Loader';
 import { Movie } from "./types";
 
 const App = () => {
@@ -27,7 +29,37 @@ const App = () => {
     setMovies(movies.filter(movie => movie.id !== id));
   };
 
+  
+  // Задание 2
+
+  const [joke, setJoke] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const url = 'https://api.chucknorris.io/jokes/random';
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(url);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setJoke(data.value);
+      };
+
+    } catch (error) {
+      console.error('Ошибка при получении данных с сервера', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
+    <>
     <div>
       <MovieForm onAdd={addMovie} />
       <ul className="mt-5 text-center d-flex align-items-center flex-column">
@@ -36,6 +68,11 @@ const App = () => {
         ))}
       </ul>
     </div>
+    <div>
+      {isLoading ? <Loader /> : <p>{joke}</p>}
+      <Button onClick={fetchData} /> 
+    </div>
+    </>
   );
 };
 
