@@ -68,7 +68,7 @@ const App = () => {
         ))}
       </ul>
     </div>
-    <div>
+    <div className="text-center">
       {isLoading ? <Loader /> : <p>{joke}</p>}
       <Button onClick={fetchData} /> 
     </div>
